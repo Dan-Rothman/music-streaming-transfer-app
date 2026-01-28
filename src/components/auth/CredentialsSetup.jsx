@@ -71,9 +71,9 @@ const CredentialsSetup = ({ isOpen, onClose }) => {
 
       {/* Full-screen container */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="w-full max-w-3xl bg-gray-800 rounded-lg shadow-xl">
+        <DialogPanel className="w-full max-w-3xl max-h-[90vh] bg-gray-800 rounded-lg shadow-xl flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <div className="flex items-center justify-between p-6 border-b border-gray-700 flex-shrink-0">
             <DialogTitle className="text-xl font-semibold text-gray-100">
               API Credentials Setup
             </DialogTitle>
@@ -86,7 +86,7 @@ const CredentialsSetup = ({ isOpen, onClose }) => {
           </div>
 
           {/* Tabs */}
-          <div className="flex border-b border-gray-700">
+          <div className="flex border-b border-gray-700 flex-shrink-0">
             <button
               onClick={() => setActiveTab('spotify')}
               className={`flex-1 px-6 py-3 font-medium transition-colors ${
@@ -110,8 +110,8 @@ const CredentialsSetup = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          {/* Content */}
-          <div className="p-6">
+          {/* Content - Scrollable */}
+          <div className="p-6 overflow-y-auto flex-1">
             {activeTab === 'spotify' && (
               <div className="space-y-6">
                 {/* Info Banner */}
@@ -265,7 +265,7 @@ const CredentialsSetup = ({ isOpen, onClose }) => {
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end gap-3 p-6 border-t border-gray-700">
+          <div className="flex justify-end gap-3 p-6 border-t border-gray-700 flex-shrink-0">
             <button
               onClick={onClose}
               className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-100 rounded font-medium transition-colors"
