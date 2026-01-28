@@ -12,6 +12,7 @@ const ServicePane = ({ side = 'left' }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSongs, setSelectedSongs] = useState(new Set());
   const [error, setError] = useState('');
+  const [lastClickedIndex, setLastClickedIndex] = useState(null);
 
   // Check if service is already connected on mount
   useEffect(() => {
@@ -35,6 +36,8 @@ const ServicePane = ({ side = 'left' }) => {
       );
       setFilteredSongs(filtered);
     }
+    // Reset last clicked index when filtered list changes
+    setLastClickedIndex(null);
   }, [searchQuery, songs]);
 
   const handleServiceChange = (e) => {
@@ -44,6 +47,7 @@ const ServicePane = ({ side = 'left' }) => {
     setSongs([]);
     setFilteredSongs([]);
     setSelectedSongs(new Set());
+    setLastClickedIndex(null);
     setError('');
   };
 
@@ -110,16 +114,34 @@ const ServicePane = ({ side = 'left' }) => {
     setSongs([]);
     setFilteredSongs([]);
     setSelectedSongs(new Set());
+    setLastClickedIndex(null);
   };
 
-  const toggleSongSelection = (songId) => {
+  const toggleSongSelection = (songId, index, event) => {
     const newSelected = new Set(selectedSongs);
-    if (newSelected.has(songId)) {
-      newSelected.delete(songId);
+
+    // Handle shift-click for range selection
+    if (event?.shiftKey && lastClickedIndex !== null && lastClickedIndex !== index) {
+      const start = Math.min(lastClickedIndex, index);
+      const end = Math.max(lastClickedIndex, index);
+
+      // Select all songs in the range
+      for (let i = start; i <= end; i++) {
+        if (filteredSongs[i]) {
+          newSelected.add(filteredSongs[i].id);
+        }
+      }
     } else {
-      newSelected.add(songId);
+      // Normal toggle behavior
+      if (newSelected.has(songId)) {
+        newSelected.delete(songId);
+      } else {
+        newSelected.add(songId);
+      }
     }
+
     setSelectedSongs(newSelected);
+    setLastClickedIndex(index);
   };
 
   const selectAll = () => {
@@ -232,10 +254,10 @@ const ServicePane = ({ side = 'left' }) => {
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredSongs.map((song) => (
+            {filteredSongs.map((song, index) => (
               <div
                 key={song.id}
-                onClick={() => toggleSongSelection(song.id)}
+                onClick={(e) => toggleSongSelection(song.id, index, e)}
                 className={`p-3 rounded border cursor-pointer transition-all ${
                   selectedSongs.has(song.id)
                     ? 'bg-blue-900/30 border-blue-600'
