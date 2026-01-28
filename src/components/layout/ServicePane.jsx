@@ -22,6 +22,29 @@ const ServicePane = ({ side = 'left' }) => {
     }
   }, [selectedService]);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Only handle shortcuts when connected and have songs
+      if (!isConnected || filteredSongs.length === 0) return;
+
+      // Ctrl+A or Cmd+A: Select all
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+        selectAll();
+      }
+
+      // Escape: Deselect all
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        deselectAll();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isConnected, filteredSongs, selectedSongs]);
+
   // Filter songs when search query changes
   useEffect(() => {
     if (searchQuery.trim() === '') {
