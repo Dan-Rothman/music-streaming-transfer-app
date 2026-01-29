@@ -55,7 +55,10 @@ const ServicePane = ({ side = 'left' }) => {
         (song) =>
           song.title.toLowerCase().includes(query) ||
           song.artist.toLowerCase().includes(query) ||
-          song.album.toLowerCase().includes(query)
+          song.album.toLowerCase().includes(query) ||
+          song.playlistNames.some((playlist) =>
+            playlist.toLowerCase().includes(query)
+          )
       );
       setFilteredSongs(filtered);
     }
@@ -236,7 +239,7 @@ const ServicePane = ({ side = 'left' }) => {
           {isConnected && (
             <input
               type="text"
-              placeholder="Search songs, artists, albums..."
+              placeholder="Search songs, artists, albums, playlists..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-gray-700 text-gray-100 border border-gray-600 rounded px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
