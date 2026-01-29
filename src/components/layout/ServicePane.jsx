@@ -171,8 +171,9 @@ const ServicePane = ({ side = 'left' }) => {
   };
 
   const selectAll = () => {
-    const allIds = new Set(filteredSongs.map((s) => s.id));
-    setSelectedSongs(allIds);
+    const newSelected = new Set(selectedSongs);
+    filteredSongs.forEach((song) => newSelected.add(song.id));
+    setSelectedSongs(newSelected);
   };
 
   const deselectAll = () => {
