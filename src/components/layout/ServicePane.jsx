@@ -281,7 +281,7 @@ const ServicePane = ({ side = 'left' }) => {
               <div
                 key={song.id}
                 onClick={(e) => toggleSongSelection(song.id, index, e)}
-                className={`p-3 rounded border cursor-pointer transition-all ${
+                className={`p-3 rounded border cursor-pointer transition-all select-none ${
                   selectedSongs.has(song.id)
                     ? 'bg-blue-900/30 border-blue-600'
                     : 'bg-gray-800 border-gray-700 hover:bg-gray-750 hover:border-gray-600'
